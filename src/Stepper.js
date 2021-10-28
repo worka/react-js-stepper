@@ -1,5 +1,5 @@
 import React from 'react';
-import { Step } from '.';
+import Step from './Step';
 import { getActiveStepKey } from './storage';
 import withStep from './withStep';
 
