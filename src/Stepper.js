@@ -1,39 +1,48 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { BrowserRouter, useLocation } from 'react-router-dom';
 import Step from './Step';
-import { getActiveStepKey } from './storage';
+import { clearStorage } from './storage';
 import withStep from './withStep';
 
-export default function Stepper({ children }) {
+export default function StepperWithRouter(props) {
+    return <BrowserRouter><Stepper { ...props }/></BrowserRouter>;
+}
+
+function Stepper({ children }) {
     const steps = [];
 
-    if (typeof children === 'object') {
-        if (!Array.isArray(children)) {
-            children = [ children ];
-        }
+    let i = 1;
 
-        let i = 1;
+    React.Children.map(children, child => {
+        if (React.isValidElement(child) && child.type === Step) {
+            if (!('component' in child.props)) {
+                throw new Error('Not all <Step/> have the "component" prop');
+            }
 
-        for (let child of children) {
-            if (React.isValidElement(child) && child.type === Step) {
-                if (!('component' in child.props)) {
-                    throw new Error('Not all <Step/> have the "component" prop');
-                }
+            const { component, ...props } = child.props;
 
-                const { component, ...props } = child.props;
+            if (React.isValidElement(component)) {
                 const key = child.key || `step${ i }`;
+
+                console.log(component)
+                // console.log(child)
 
                 steps.push({ component, key, props });
 
                 i++;
             }
         }
-    }
+    });
 
     if (steps.length === 0) {
         throw new Error('No one <Step/> found in <Stepper/>');
     }
 
-    const activeStepKey = getActiveStepKey() || steps[0].key;
+    const { state = { activeStepKey: steps[0].key } } = useLocation();
+    useEffect(() => () => clearStorage(), []);
+
+    // const activeStepKey = getActiveStepKey() || steps[0].key;
+    const activeStepKey = state.activeStepKey;
     const prevStepKey = getPrevKey(steps, activeStepKey);
     const nextStepKey = getNextKey(steps, activeStepKey);
     const activeStep = getByKey(steps, activeStepKey);

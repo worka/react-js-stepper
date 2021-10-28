@@ -1,13 +1,14 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { addData, getData } from './storage';
 
-export default function withStep(Component, stepDataKey, prevStepKey, nextStepKey) {
+export default function withStep(Component, activeStepKey, prevStepKey, nextStepKey) {
     return (props) => {
         const history = useHistory();
+        const location = useLocation();
 
         const allData = getData();
-        const stepData = allData[stepDataKey] || null;
+        const stepData = allData[activeStepKey] || null;
 
         const goBack = () => {
             history.goBack();
@@ -18,18 +19,18 @@ export default function withStep(Component, stepDataKey, prevStepKey, nextStepKe
                 ...location,
                 state: {
                     ...location.state,
-                    activeStep: nextStepKey
+                    activeStepKey: nextStepKey
                 }
             });
         };
 
         const saveAndGoBack = data => {
-            addData({ [stepDataKey]: data });
+            addData({ [activeStepKey]: data });
             goBack();
         };
 
         const saveAndGoForward = data => {
-            addData({ [stepDataKey]: data });
+            addData({ [activeStepKey]: data });
             goForward();
         };
 
