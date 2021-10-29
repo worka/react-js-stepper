@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
 
 export default class ThirdStep extends React.Component {
@@ -10,12 +10,16 @@ export default class ThirdStep extends React.Component {
 
     render() {
         return (
-            <div>
-                ThirdStep
-                <button className="btn btn-primary" onClick={ () => {
-                    this.props.saveAndGoToNextStep('third');
-                } }>saveAndGoToNextStep</button>
-            </div>
+            <Fragment>
+                <div className="mb-2">ThirdStep</div>
+
+                <div className="mb-2">
+                    <button className="btn btn-primary" onClick={ () => {
+                        this.props.saveAndGoToNextStep('third');
+                    } }>saveAndGoToNextStep
+                    </button>
+                </div>
+            </Fragment>
         );
     }
 }

@@ -28,6 +28,11 @@ export default function withStep(Component, activeStepKey, prevStepKey, nextStep
             goToStepByKey(nextStepKey);
         };
 
+        const saveAndGoToStepByKey = (data, key) => {
+            addData({ [activeStepKey]: data });
+            goToStepByKey(key);
+        };
+
         const saveAndGoToPrevStep = data => {
             addData({ [activeStepKey]: data });
             goToPrevStep();
@@ -38,7 +43,8 @@ export default function withStep(Component, activeStepKey, prevStepKey, nextStep
             goToNextStep();
         };
 
-        return <Component { ...props } stepData={ stepData } allData={ allData } goToStepByKey={ goToStepByKey }
+        return <Component { ...props } stepData={ stepData } allData={ allData }
+                          goToStepByKey={ goToStepByKey } saveAndGoToStepByKey={ saveAndGoToStepByKey }
                           goToPrevStep={ goToPrevStep } saveAndGoToPrevStep={ saveAndGoToPrevStep }
                           goToNextStep={ goToNextStep } saveAndGoToNextStep={ saveAndGoToNextStep }/>;
     };

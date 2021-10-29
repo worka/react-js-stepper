@@ -41,9 +41,9 @@ function Stepper({ steps, clearDataOnUnmount = true }) {
         state = { activeStepKey: steps[0].key };
     }
 
-    if (state.activeStepKey !== steps[0].key && !issetStorage()) {
-        state = { activeStepKey: steps[0].key };
-    }
+    // if (state.activeStepKey !== steps[0].key && !issetStorage()) {
+    //     state = { activeStepKey: steps[0].key };
+    // }
 
     const activeStepKey = state.activeStepKey;
 
