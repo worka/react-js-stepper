@@ -10,7 +10,7 @@ export default function App() {
         <div className="container mt-3">
             <div className="card">
                 <div className="card-body">
-                    <Stepper clearDataOnUnmount={ true }>
+                    <Stepper>
                         <Step component={ FirstStep } title="FirstStepFromAppComponent"/>
                         <Step component={ SecondStep }/>
                         <Step component={ ThirdStep } key="third"/>
