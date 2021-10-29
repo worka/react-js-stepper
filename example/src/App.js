@@ -1,5 +1,5 @@
 import React from 'react';
-import { Stepper, Step } from '../../src';
+import { Stepper, Step } from 'react-js-stepper';
 
 import FirstStep from './FirstStep';
 import SecondStep from './SecondStep';

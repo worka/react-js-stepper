@@ -27,5 +27,9 @@ export default {
             presets: [ '@babel/env', '@babel/preset-react' ]
         }),
         commonjs()
-    ]
+    ],
+    watch: {
+        exclude: 'node_modules/**',
+        clearScreen: false
+    }
 };
