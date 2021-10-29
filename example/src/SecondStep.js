@@ -1,12 +1,12 @@
 import React from 'react';
 
-export default function SecondStep({ goForward }) {
+export default function SecondStep({ goToNextStep }) {
     return (
         <div>
             SecondStep
             <button className="btn btn-primary" onClick={ () => {
-                goForward();
-            } }>goForward</button>
+                goToNextStep();
+            } }>goToNextStep</button>
         </div>
     );
 }

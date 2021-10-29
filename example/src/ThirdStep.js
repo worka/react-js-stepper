@@ -13,8 +13,8 @@ export default class ThirdStep extends React.Component {
             <div>
                 ThirdStep
                 <button className="btn btn-primary" onClick={ () => {
-                    this.props.saveAndGoForward('third');
-                } }>saveAndGoForward</button>
+                    this.props.saveAndGoToNextStep('third');
+                } }>saveAndGoToNextStep</button>
             </div>
         );
     }

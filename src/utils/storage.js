@@ -6,6 +6,10 @@ function getStorage() {
     return rawData ? JSON.parse(rawData) : { activeStepKey: null, data: [] };
 }
 
+export function issetStorage() {
+    return sessionStorage.getItem(STEPPER_DATA_KEY) !== null;
+}
+
 export function getActiveStepKey() {
     const storage = getStorage();
 
