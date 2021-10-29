@@ -29,7 +29,11 @@ export default ({ children, ...props }) => {
         throw new Error('No one <Step/> found in <Stepper/>');
     }
 
-    return <BrowserRouter><Stepper steps={ steps } { ...props }/></BrowserRouter>;
+    return (
+        <BrowserRouter>
+            <Stepper steps={ steps } { ...props }/>
+        </BrowserRouter>
+    );
 }
 
 function Stepper({ steps, clearDataOnUnmount = true }) {
