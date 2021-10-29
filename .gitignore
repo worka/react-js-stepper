@@ -2,3 +2,5 @@
 node_modules/
 
 example/dist/
+example/node_modules/
+example/yarn.lock
