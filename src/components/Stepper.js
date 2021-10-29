@@ -5,7 +5,7 @@ import withStep from '../hoc/withStep';
 import { clearStorage, issetStorage } from '../utils/storage';
 import { getObjectByKey, getNextObjectByKey, getPrevObjectByKey } from '../utils/search';
 
-export default function StepperWithRouter({ children, ...props }) {
+export default ({ children, ...props }) => {
     const steps = [];
 
     let i = 1;
