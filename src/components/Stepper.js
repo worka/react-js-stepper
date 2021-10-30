@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import Step from './Step';
 import withStep from '../hoc/withStep';
 import { clearStorage, issetStorage } from '../utils/storage';
@@ -29,11 +29,7 @@ export default ({ children, ...props }) => {
         throw new Error('No one <Step/> found in <Stepper/>');
     }
 
-    return (
-        <BrowserRouter>
-            <Stepper steps={ steps } { ...props }/>
-        </BrowserRouter>
-    );
+    return <Stepper steps={ steps } { ...props }/>;
 }
 
 function Stepper({ steps, clearDataOnUnmount = true }) {
@@ -45,9 +41,9 @@ function Stepper({ steps, clearDataOnUnmount = true }) {
         state = { activeStepKey: steps[0].key };
     }
 
-    // if (state.activeStepKey !== steps[0].key && !issetStorage()) {
-    //     state = { activeStepKey: steps[0].key };
-    // }
+    if (state.activeStepKey !== steps[0].key && !issetStorage()) {
+        state = { activeStepKey: steps[0].key };
+    }
 
     const activeStepKey = state.activeStepKey;
 

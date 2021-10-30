@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import { addData, getData } from '../utils/storage';
+import { addData, getData, initializeStorage } from '../utils/storage';
 
 export default function withStep(Component, activeStepKey, prevStepKey, nextStepKey) {
     return (props) => {
@@ -11,6 +11,8 @@ export default function withStep(Component, activeStepKey, prevStepKey, nextStep
         const stepData = allData[activeStepKey] || null;
 
         const goToStepByKey = key => {
+            initializeStorage();
+
             history.push({
                 ...location,
                 state: {

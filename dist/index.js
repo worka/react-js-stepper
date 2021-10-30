@@ -195,13 +195,25 @@ function Step() {
 }
 
 var STEPPER_DATA_KEY = 'REACT_JS_STEPPER_DATA';
+var initialStorage = {
+  activeStepKey: null,
+  data: [],
+  init: false
+};
 
 function getStorage() {
   var rawData = sessionStorage.getItem(STEPPER_DATA_KEY);
-  return rawData ? JSON.parse(rawData) : {
-    activeStepKey: null,
-    data: []
-  };
+  return rawData ? JSON.parse(rawData) : initialStorage;
+}
+
+function issetStorage() {
+  return sessionStorage.getItem(STEPPER_DATA_KEY) !== null;
+}
+function initializeStorage() {
+  var storage = getStorage();
+  sessionStorage.setItem(STEPPER_DATA_KEY, JSON.stringify(_objectSpread2(_objectSpread2({}, storage), {}, {
+    init: true
+  })));
 }
 function getData() {
   var storage = getStorage();
@@ -225,6 +237,7 @@ function withStep(Component, activeStepKey, prevStepKey, nextStepKey) {
     var stepData = allData[activeStepKey] || null;
 
     var goToStepByKey = function goToStepByKey(key) {
+      initializeStorage();
       history.push(_objectSpread2(_objectSpread2({}, location), {}, {
         state: _objectSpread2(_objectSpread2({}, location.state), {}, {
           activeStepKey: key
@@ -351,9 +364,9 @@ var Stepper = (function (_ref) {
     throw new Error('No one <Step/> found in <Stepper/>');
   }
 
-  return /*#__PURE__*/React__default["default"].createElement(reactRouterDom.BrowserRouter, null, /*#__PURE__*/React__default["default"].createElement(Stepper$1, _extends({
+  return /*#__PURE__*/React__default["default"].createElement(Stepper$1, _extends({
     steps: steps
-  }, props)));
+  }, props));
 });
 
 function Stepper$1(_ref2) {
@@ -374,10 +387,13 @@ function Stepper$1(_ref2) {
     state = {
       activeStepKey: steps[0].key
     };
-  } // if (state.activeStepKey !== steps[0].key && !issetStorage()) {
-  //     state = { activeStepKey: steps[0].key };
-  // }
+  }
 
+  if (state.activeStepKey !== steps[0].key && !issetStorage()) {
+    state = {
+      activeStepKey: steps[0].key
+    };
+  }
 
   var activeStepKey = state.activeStepKey;
   var prevStep = getPrevObjectByKey(steps, activeStepKey);

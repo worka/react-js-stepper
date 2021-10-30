@@ -1,13 +1,21 @@
 const STEPPER_DATA_KEY = 'REACT_JS_STEPPER_DATA';
 
+const initialStorage = { activeStepKey: null, data: [], init: false };
+
 function getStorage() {
     const rawData = sessionStorage.getItem(STEPPER_DATA_KEY);
 
-    return rawData ? JSON.parse(rawData) : { activeStepKey: null, data: [] };
+    return rawData ? JSON.parse(rawData) : initialStorage;
 }
 
 export function issetStorage() {
     return sessionStorage.getItem(STEPPER_DATA_KEY) !== null;
+}
+
+export function initializeStorage() {
+    const storage = getStorage();
+
+    sessionStorage.setItem(STEPPER_DATA_KEY, JSON.stringify({ ...storage, init: true }));
 }
 
 export function getActiveStepKey() {
