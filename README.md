@@ -6,6 +6,7 @@
 
 ```javascript
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 import { Stepper, Step } from 'react-js-stepper';
 
 import YourFirstStep from './FirstStep';
@@ -14,11 +15,13 @@ import YourThirdStep from './ThirdStep';
 
 export default function App() {
     return (
-        <Stepper>
-            <Step component={ YourFirstStep } title="FirstStepFromAppComponent"/>
-            <Step component={ YourSecondStep }/>
-            <Step component={ YourThirdStep } key="third"/>
-        </Stepper>
+        <BrowserRouter>
+            <Stepper>
+                <Step component={ YourFirstStep } title="FirstStepFromAppComponent"/>
+                <Step component={ YourSecondStep }/>
+                <Step component={ YourThirdStep } key="third"/>
+            </Stepper>
+        </BrowserRouter>
     );
 }
 ```
