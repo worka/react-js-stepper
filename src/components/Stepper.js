@@ -1,11 +1,18 @@
 import React, { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import Step from './Step';
 import withStep from '../hoc/withStep';
 import { clearStorage, issetStorage } from '../utils/storage';
 import { getObjectByKey, getNextObjectByKey, getPrevObjectByKey } from '../utils/search';
 
 export default ({ children, ...props }) => {
+    const history = useHistory();
+
+    if (!history) {
+        // help to correctly determine the presence <BrowserRouter/> in the tree components :)
+        throw new Error('<Stepper/> component must child the <BrowserRouter/> component');
+    }
+
     const steps = [];
 
     let i = 1;

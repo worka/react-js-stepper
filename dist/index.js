@@ -338,6 +338,13 @@ var Stepper = (function (_ref) {
   var children = _ref.children,
       props = _objectWithoutProperties(_ref, _excluded);
 
+  var history = reactRouterDom.useHistory();
+
+  if (!history) {
+    // help to correctly determine the presence <BrowserRouter/> in the tree components :)
+    throw new Error('<Stepper/> component must child the <BrowserRouter/> component');
+  }
+
   var steps = [];
   var i = 1;
   React__default["default"].Children.map(children, function (child) {
