@@ -1,0 +1,2 @@
+export const STORAGE_KEY = 'REACT_JS_STEPPER_DATA';
+export const HISTORY_STATE_KEY = 'ACTIVE_STEP_KEY';

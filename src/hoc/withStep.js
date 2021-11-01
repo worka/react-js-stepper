@@ -1,6 +1,7 @@
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { addData, getData, initializeStorage } from '../utils/storage';
+import { HISTORY_STATE_KEY } from '../constants';
 
 export default function withStep(Component, activeStepKey, prevStepKey, nextStepKey) {
     return (props) => {
@@ -17,7 +18,7 @@ export default function withStep(Component, activeStepKey, prevStepKey, nextStep
                 ...location,
                 state: {
                     ...location.state,
-                    activeStepKey: key
+                    [HISTORY_STATE_KEY]: key
                 }
             });
         };

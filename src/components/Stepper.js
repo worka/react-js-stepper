@@ -4,6 +4,7 @@ import Step from './Step';
 import withStep from '../hoc/withStep';
 import { clearStorage, issetStorage } from '../utils/storage';
 import { getObjectByKey, getNextObjectByKey, getPrevObjectByKey } from '../utils/search';
+import { HISTORY_STATE_KEY } from '../constants';
 
 export default ({ children, ...props }) => {
     const history = useHistory();
@@ -44,15 +45,18 @@ function Stepper({ steps, clearDataOnUnmount = true }) {
 
     useEffect(() => () => clearDataOnUnmount && clearStorage(), []);
 
+    const firstStep = steps[0];
+    const firstStepKey = firstStep.key;
+
     if (!state) {
-        state = { activeStepKey: steps[0].key };
+        state = { [HISTORY_STATE_KEY]: firstStepKey };
     }
 
-    if (state.activeStepKey !== steps[0].key && !issetStorage()) {
-        state = { activeStepKey: steps[0].key };
+    if (state[HISTORY_STATE_KEY] !== firstStepKey && !issetStorage()) {
+        state = { [HISTORY_STATE_KEY]: firstStepKey };
     }
 
-    const activeStepKey = state.activeStepKey;
+    const activeStepKey = state[HISTORY_STATE_KEY];
 
     const prevStep = getPrevObjectByKey(steps, activeStepKey);
     const nextStep = getNextObjectByKey(steps, activeStepKey);

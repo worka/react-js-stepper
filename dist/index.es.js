@@ -186,24 +186,25 @@ function Step() {
   return null;
 }
 
-var STEPPER_DATA_KEY = 'REACT_JS_STEPPER_DATA';
+var STORAGE_KEY = 'REACT_JS_STEPPER_DATA';
+var HISTORY_STATE_KEY = 'ACTIVE_STEP_KEY';
+
 var initialStorage = {
-  activeStepKey: null,
   data: [],
   init: false
 };
 
 function getStorage() {
-  var rawData = sessionStorage.getItem(STEPPER_DATA_KEY);
+  var rawData = sessionStorage.getItem(STORAGE_KEY);
   return rawData ? JSON.parse(rawData) : initialStorage;
 }
 
 function issetStorage() {
-  return sessionStorage.getItem(STEPPER_DATA_KEY) !== null;
+  return sessionStorage.getItem(STORAGE_KEY) !== null;
 }
 function initializeStorage() {
   var storage = getStorage();
-  sessionStorage.setItem(STEPPER_DATA_KEY, JSON.stringify(_objectSpread2(_objectSpread2({}, storage), {}, {
+  sessionStorage.setItem(STORAGE_KEY, JSON.stringify(_objectSpread2(_objectSpread2({}, storage), {}, {
     init: true
   })));
 }
@@ -213,12 +214,12 @@ function getData() {
 }
 function addData(data) {
   var storage = getStorage();
-  sessionStorage.setItem(STEPPER_DATA_KEY, JSON.stringify(_objectSpread2(_objectSpread2({}, storage), {}, {
+  sessionStorage.setItem(STORAGE_KEY, JSON.stringify(_objectSpread2(_objectSpread2({}, storage), {}, {
     data: _objectSpread2(_objectSpread2({}, storage.data), data)
   })));
 }
 function clearStorage() {
-  sessionStorage.removeItem(STEPPER_DATA_KEY);
+  sessionStorage.removeItem(STORAGE_KEY);
 }
 
 function withStep(Component, activeStepKey, prevStepKey, nextStepKey) {
@@ -231,9 +232,7 @@ function withStep(Component, activeStepKey, prevStepKey, nextStepKey) {
     var goToStepByKey = function goToStepByKey(key) {
       initializeStorage();
       history.push(_objectSpread2(_objectSpread2({}, location), {}, {
-        state: _objectSpread2(_objectSpread2({}, location.state), {}, {
-          activeStepKey: key
-        })
+        state: _objectSpread2(_objectSpread2({}, location.state), {}, _defineProperty({}, HISTORY_STATE_KEY, key))
       }));
     };
 
@@ -381,20 +380,18 @@ function Stepper$1(_ref2) {
       return clearDataOnUnmount && clearStorage();
     };
   }, []);
+  var firstStep = steps[0];
+  var firstStepKey = firstStep.key;
 
   if (!state) {
-    state = {
-      activeStepKey: steps[0].key
-    };
+    state = _defineProperty({}, HISTORY_STATE_KEY, firstStepKey);
   }
 
-  if (state.activeStepKey !== steps[0].key && !issetStorage()) {
-    state = {
-      activeStepKey: steps[0].key
-    };
+  if (state[HISTORY_STATE_KEY] !== firstStepKey && !issetStorage()) {
+    state = _defineProperty({}, HISTORY_STATE_KEY, firstStepKey);
   }
 
-  var activeStepKey = state.activeStepKey;
+  var activeStepKey = state[HISTORY_STATE_KEY];
   var prevStep = getPrevObjectByKey(steps, activeStepKey);
   var nextStep = getNextObjectByKey(steps, activeStepKey);
   var activeStep = getObjectByKey(steps, activeStepKey);
