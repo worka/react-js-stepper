@@ -3,7 +3,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { addData, getData, initializeStorage } from '../utils/storage';
 import { HISTORY_STATE_KEY } from '../constants';
 
-export default function withStep(Component, activeStepKey, prevStepKey, nextStepKey) {
+export default function withStep(Component, activeStepKey, nextStepKey) {
     return (props) => {
         const history = useHistory();
         const location = useLocation();

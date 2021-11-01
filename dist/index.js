@@ -190,10 +190,6 @@ function _createForOfIteratorHelper(o, allowArrayLike) {
   };
 }
 
-function Step() {
-  return null;
-}
-
 var STORAGE_KEY = 'REACT_JS_STEPPER_DATA';
 var HISTORY_STATE_KEY = 'ACTIVE_STEP_KEY';
 
@@ -230,7 +226,7 @@ function clearStorage() {
   sessionStorage.removeItem(STORAGE_KEY);
 }
 
-function withStep(Component, activeStepKey, prevStepKey, nextStepKey) {
+function withStep(Component, activeStepKey, nextStepKey) {
   return function (props) {
     var history = reactRouterDom.useHistory();
     var location = reactRouterDom.useLocation();
@@ -315,25 +311,71 @@ function getNextObjectByKey(objects, key) {
 
   return nextObject;
 }
-function getPrevObjectByKey(objects, key) {
-  var prevObject = objects[objects.length - 1];
 
-  for (var i = 0; i < objects.length; i++) {
-    var object = objects[i];
+/**
+ * @param {Step[]} steps
+ * @param {boolean} [clearDataOnUnmount = true]
+ * @returns {JSX.Element|boolean}
+ * @constructor
+ */
 
-    if (object.key === key) {
-      break;
-    }
+function Stepper(_ref) {
+  var steps = _ref.steps,
+      _ref$clearDataOnUnmou = _ref.clearDataOnUnmount,
+      clearDataOnUnmount = _ref$clearDataOnUnmou === void 0 ? true : _ref$clearDataOnUnmou;
 
-    prevObject = object;
+  var _useLocation = reactRouterDom.useLocation(),
+      state = _useLocation.state;
+
+  React.useEffect(function () {
+    return function () {
+      return clearDataOnUnmount && clearStorage();
+    };
+  }, []);
+  var firstStep = steps[0];
+  var firstStepKey = firstStep.key;
+
+  if (!state) {
+    state = _defineProperty({}, HISTORY_STATE_KEY, firstStepKey);
   }
 
-  return prevObject;
+  if (state[HISTORY_STATE_KEY] !== firstStepKey && !issetStorage()) {
+    state = _defineProperty({}, HISTORY_STATE_KEY, firstStepKey);
+  }
+
+  var activeStepKey = state[HISTORY_STATE_KEY];
+  var nextStep = getNextObjectByKey(steps, activeStepKey);
+  var activeStep = getObjectByKey(steps, activeStepKey);
+
+  if (!activeStep) {
+    return false;
+  }
+
+  var ActiveStepComponent = withStep(activeStep.component, activeStep.key, nextStep.key);
+  return /*#__PURE__*/React__default["default"].createElement(ActiveStepComponent, activeStep.props);
+}
+
+var _excluded$1 = ["component", "key"];
+/**
+ * @param {React.Component} component
+ * @param {string} [key]
+ * @param {any[]} [props]
+ * @returns {null}
+ * @constructor
+ */
+
+function Step(_ref) {
+  _ref.component;
+      _ref.key;
+      _objectWithoutProperties(_ref, _excluded$1);
+
+  return null;
 }
 
 var _excluded = ["children"],
     _excluded2 = ["component"];
-var Stepper = (function (_ref) {
+
+var StepperWrapper = function StepperWrapper(_ref) {
   var children = _ref.children,
       props = _objectWithoutProperties(_ref, _excluded);
 
@@ -370,48 +412,11 @@ var Stepper = (function (_ref) {
     throw new Error('No one <Step/> found in <Stepper/>');
   }
 
-  return /*#__PURE__*/React__default["default"].createElement(Stepper$1, _extends({
+  return /*#__PURE__*/React__default["default"].createElement(Stepper, _extends({
     steps: steps
   }, props));
-});
-
-function Stepper$1(_ref2) {
-  var steps = _ref2.steps,
-      _ref2$clearDataOnUnmo = _ref2.clearDataOnUnmount,
-      clearDataOnUnmount = _ref2$clearDataOnUnmo === void 0 ? true : _ref2$clearDataOnUnmo;
-
-  var _useLocation = reactRouterDom.useLocation(),
-      state = _useLocation.state;
-
-  React.useEffect(function () {
-    return function () {
-      return clearDataOnUnmount && clearStorage();
-    };
-  }, []);
-  var firstStep = steps[0];
-  var firstStepKey = firstStep.key;
-
-  if (!state) {
-    state = _defineProperty({}, HISTORY_STATE_KEY, firstStepKey);
-  }
-
-  if (state[HISTORY_STATE_KEY] !== firstStepKey && !issetStorage()) {
-    state = _defineProperty({}, HISTORY_STATE_KEY, firstStepKey);
-  }
-
-  var activeStepKey = state[HISTORY_STATE_KEY];
-  var prevStep = getPrevObjectByKey(steps, activeStepKey);
-  var nextStep = getNextObjectByKey(steps, activeStepKey);
-  var activeStep = getObjectByKey(steps, activeStepKey);
-
-  if (!activeStep) {
-    return false;
-  }
-
-  var ActiveStepComponent = withStep(activeStep.component, activeStep.key, prevStep.key, nextStep.key);
-  return /*#__PURE__*/React__default["default"].createElement(ActiveStepComponent, activeStep.props);
-}
+};
 
 exports.Step = Step;
-exports.Stepper = Stepper;
+exports.Stepper = StepperWrapper;
 //# sourceMappingURL=index.js.map

@@ -1,5 +1,12 @@
 import React from 'react';
 
-export default function Step() {
+/**
+ * @param {React.Component} component
+ * @param {string} [key]
+ * @param {any[]} [props]
+ * @returns {null}
+ * @constructor
+ */
+export default function Step({ component, key, ...props }) {
     return null;
 }
