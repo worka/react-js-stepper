@@ -9,9 +9,10 @@ export function getObjectByKey(objects, key) {
 }
 
 export function getNextObjectByKey(objects, key) {
+    let objectsCount = objects.length;
     let nextObject = objects[0];
 
-    for (let i = objects.length - 1; i >= 0; i--) {
+    for (let i = objectsCount - 1; i >= 0; i--) {
         const object = objects[i];
 
         if (object.key === key) {
@@ -25,9 +26,10 @@ export function getNextObjectByKey(objects, key) {
 }
 
 export function getPrevObjectByKey(objects, key) {
-    let prevObject = objects[objects.length - 1];
+    let objectsCount = objects.length;
+    let prevObject = objects[objectsCount - 1];
 
-    for (let i = 0; i < objects.length; i++) {
+    for (let i = 0; i < objectsCount; i++) {
         const object = objects[i];
 
         if (object.key === key) {

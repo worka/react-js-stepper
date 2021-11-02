@@ -2,6 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import Stepper from './components/Stepper';
 import Step from './components/Step';
+import useStepperStateValue from './hooks/useStepperStateValue';
 
 const StepperWrapper = ({ children, ...props }) => {
     const history = useHistory();
@@ -13,20 +14,16 @@ const StepperWrapper = ({ children, ...props }) => {
 
     const steps = [];
 
-    let i = 1;
-
-    React.Children.map(children, child => {
+    React.Children.map(children, (child, index) => {
         if (React.isValidElement(child) && child.type === Step) {
             if (!('component' in child.props)) {
                 throw new Error('Not all <Step/> have the "component" prop');
             }
 
             const { component, ...props } = child.props;
-            const key = child.key || `step${ i }`;
+            const key = child.key || `step${ index + 1 }`;
 
             steps.push({ component, key, props });
-
-            i++;
         }
     });
 
@@ -37,4 +34,5 @@ const StepperWrapper = ({ children, ...props }) => {
     return <Stepper steps={ steps } { ...props }/>;
 };
 
-export { StepperWrapper as Stepper, Step };
+export { StepperWrapper as Stepper, Step as Step };
+export { useStepperStateValue };

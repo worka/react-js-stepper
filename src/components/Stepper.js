@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import withStep from '../hoc/withStep';
+import withStep from '../hocs/withStep';
 import { clearStorage, issetStorage } from '../utils/storage';
-import { getObjectByKey, getNextObjectByKey, getPrevObjectByKey } from '../utils/search';
+import { getObjectByKey, getNextObjectByKey } from '../utils/search';
 import { HISTORY_STATE_KEY } from '../constants';
 
 /**

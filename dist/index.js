@@ -297,9 +297,10 @@ function getObjectByKey(objects, key) {
   return null;
 }
 function getNextObjectByKey(objects, key) {
+  var objectsCount = objects.length;
   var nextObject = objects[0];
 
-  for (var i = objects.length - 1; i >= 0; i--) {
+  for (var i = objectsCount - 1; i >= 0; i--) {
     var object = objects[i];
 
     if (object.key === key) {
@@ -372,6 +373,14 @@ function Step(_ref) {
   return null;
 }
 
+function useStepperStateValue() {
+  var _useLocation = reactRouterDom.useLocation(),
+      _useLocation$state = _useLocation.state,
+      state = _useLocation$state === void 0 ? {} : _useLocation$state;
+
+  return state[HISTORY_STATE_KEY];
+}
+
 var _excluded = ["children"],
     _excluded2 = ["component"];
 
@@ -387,8 +396,7 @@ var StepperWrapper = function StepperWrapper(_ref) {
   }
 
   var steps = [];
-  var i = 1;
-  React__default["default"].Children.map(children, function (child) {
+  React__default["default"].Children.map(children, function (child, index) {
     if ( /*#__PURE__*/React__default["default"].isValidElement(child) && child.type === Step) {
       if (!('component' in child.props)) {
         throw new Error('Not all <Step/> have the "component" prop');
@@ -398,13 +406,12 @@ var StepperWrapper = function StepperWrapper(_ref) {
           component = _child$props.component,
           _props = _objectWithoutProperties(_child$props, _excluded2);
 
-      var key = child.key || "step".concat(i);
+      var key = child.key || "step".concat(index + 1);
       steps.push({
         component: component,
         key: key,
         props: _props
       });
-      i++;
     }
   });
 
@@ -419,4 +426,5 @@ var StepperWrapper = function StepperWrapper(_ref) {
 
 exports.Step = Step;
 exports.Stepper = StepperWrapper;
+exports.useStepperStateValue = useStepperStateValue;
 //# sourceMappingURL=index.js.map
