@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import Stepper from './components/Stepper';
 import Step from './components/Step';
 import useStepperStateValue from './hooks/useStepperStateValue';
+import useResetSteps from './hooks/useResetSteps';
 
 const StepperWrapper = ({ children, ...props }) => {
     const history = useHistory();
@@ -34,5 +35,5 @@ const StepperWrapper = ({ children, ...props }) => {
     return <Stepper steps={ steps } { ...props }/>;
 };
 
-export { StepperWrapper as Stepper, Step as Step };
-export { useStepperStateValue };
+export { StepperWrapper as Stepper, Step };
+export { useStepperStateValue, useResetSteps };

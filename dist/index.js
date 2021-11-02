@@ -381,6 +381,17 @@ function useStepperStateValue() {
   return state[HISTORY_STATE_KEY];
 }
 
+function useResetSteps() {
+  var history = reactRouterDom.useHistory();
+  var location = reactRouterDom.useLocation();
+  return function () {
+    clearStorage();
+    history.push(_objectSpread2(_objectSpread2({}, location), {}, {
+      state: _objectSpread2(_objectSpread2({}, location.state), {}, _defineProperty({}, HISTORY_STATE_KEY, null))
+    }));
+  };
+}
+
 var _excluded = ["children"],
     _excluded2 = ["component"];
 
@@ -426,5 +437,6 @@ var StepperWrapper = function StepperWrapper(_ref) {
 
 exports.Step = Step;
 exports.Stepper = StepperWrapper;
+exports.useResetSteps = useResetSteps;
 exports.useStepperStateValue = useStepperStateValue;
 //# sourceMappingURL=index.js.map
