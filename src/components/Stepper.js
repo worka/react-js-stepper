@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
 import withStep from '../hocs/withStep';
-import { clearStorage, issetStorage } from '../utils/storage';
+import { clearStorage } from '../utils/storage';
 import { getObjectByKey, getNextObjectByKey } from '../utils/search';
-import { HISTORY_STATE_KEY } from '../constants';
+import useActiveStepKey from '../hooks/useActiveStepKey';
 
 /**
  * @param {Step[]} steps
@@ -12,22 +11,12 @@ import { HISTORY_STATE_KEY } from '../constants';
  * @constructor
  */
 export default function Stepper({ steps, clearDataOnUnmount = true }) {
-    let { state } = useLocation();
-
-    useEffect(() => () => clearDataOnUnmount && clearStorage(), []);
-
     const firstStep = steps[0];
     const firstStepKey = firstStep.key;
 
-    if (!state) {
-        state = { [HISTORY_STATE_KEY]: firstStepKey };
-    }
+    const activeStepKey = useActiveStepKey(firstStepKey);
 
-    if (state[HISTORY_STATE_KEY] !== firstStepKey && !issetStorage()) {
-        state = { [HISTORY_STATE_KEY]: firstStepKey };
-    }
-
-    const activeStepKey = state[HISTORY_STATE_KEY];
+    useEffect(() => () => clearDataOnUnmount && clearStorage(), []);
 
     const nextStep = getNextObjectByKey(steps, activeStepKey);
     const activeStep = getObjectByKey(steps, activeStepKey);

@@ -1,17 +1,12 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 import Stepper from './components/Stepper';
 import Step from './components/Step';
-import useStepperStateValue from './hooks/useStepperStateValue';
+import useActiveStepKey from './hooks/useActiveStepKey';
 import useResetSteps from './hooks/useResetSteps';
+import useCheckRouter from './hooks/useCheckRouter';
 
 const StepperWrapper = ({ children, ...props }) => {
-    const history = useHistory();
-
-    if (!history) {
-        // help to correctly determine the presence <BrowserRouter/> in the tree components :)
-        throw new Error('<Stepper/> component must child the <BrowserRouter/> component');
-    }
+    useCheckRouter();
 
     const steps = [];
 
@@ -36,4 +31,4 @@ const StepperWrapper = ({ children, ...props }) => {
 };
 
 export { StepperWrapper as Stepper, Step };
-export { useStepperStateValue, useResetSteps };
+export { useActiveStepKey, useResetSteps };
