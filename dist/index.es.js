@@ -305,6 +305,21 @@ function getNextObjectByKey(objects, key) {
   return nextObject;
 }
 
+function useActiveStepKey(defaultStepKey) {
+  var _useLocation = useLocation(),
+      state = _useLocation.state;
+
+  if (!state) {
+    state = _defineProperty({}, HISTORY_STATE_KEY, defaultStepKey);
+  }
+
+  if (state[HISTORY_STATE_KEY] !== defaultStepKey && !issetStorage()) {
+    state = _defineProperty({}, HISTORY_STATE_KEY, defaultStepKey);
+  }
+
+  return state[HISTORY_STATE_KEY];
+}
+
 /**
  * @param {Step[]} steps
  * @param {boolean} [clearDataOnUnmount = true]
@@ -316,27 +331,14 @@ function Stepper(_ref) {
   var steps = _ref.steps,
       _ref$clearDataOnUnmou = _ref.clearDataOnUnmount,
       clearDataOnUnmount = _ref$clearDataOnUnmou === void 0 ? true : _ref$clearDataOnUnmou;
-
-  var _useLocation = useLocation(),
-      state = _useLocation.state;
-
+  var firstStep = steps[0];
+  var firstStepKey = firstStep.key;
+  var activeStepKey = useActiveStepKey(firstStepKey);
   useEffect(function () {
     return function () {
       return clearDataOnUnmount && clearStorage();
     };
   }, []);
-  var firstStep = steps[0];
-  var firstStepKey = firstStep.key;
-
-  if (!state) {
-    state = _defineProperty({}, HISTORY_STATE_KEY, firstStepKey);
-  }
-
-  if (state[HISTORY_STATE_KEY] !== firstStepKey && !issetStorage()) {
-    state = _defineProperty({}, HISTORY_STATE_KEY, firstStepKey);
-  }
-
-  var activeStepKey = state[HISTORY_STATE_KEY];
   var nextStep = getNextObjectByKey(steps, activeStepKey);
   var activeStep = getObjectByKey(steps, activeStepKey);
 
@@ -365,14 +367,6 @@ function Step(_ref) {
   return null;
 }
 
-function useStepperStateValue() {
-  var _useLocation = useLocation(),
-      _useLocation$state = _useLocation.state,
-      state = _useLocation$state === void 0 ? {} : _useLocation$state;
-
-  return state[HISTORY_STATE_KEY];
-}
-
 function useResetSteps() {
   var history = useHistory();
   var location = useLocation();
@@ -384,6 +378,15 @@ function useResetSteps() {
   };
 }
 
+function useCheckRouter() {
+  var history = useHistory();
+
+  if (!history) {
+    // help to correctly determine the presence <BrowserRouter/> in the tree components :)
+    throw new Error('<Stepper/> component must child the <BrowserRouter/> component');
+  }
+}
+
 var _excluded = ["children"],
     _excluded2 = ["component"];
 
@@ -391,13 +394,7 @@ var StepperWrapper = function StepperWrapper(_ref) {
   var children = _ref.children,
       props = _objectWithoutProperties(_ref, _excluded);
 
-  var history = useHistory();
-
-  if (!history) {
-    // help to correctly determine the presence <BrowserRouter/> in the tree components :)
-    throw new Error('<Stepper/> component must child the <BrowserRouter/> component');
-  }
-
+  useCheckRouter();
   var steps = [];
   React.Children.map(children, function (child, index) {
     if ( /*#__PURE__*/React.isValidElement(child) && child.type === Step) {
@@ -427,5 +424,5 @@ var StepperWrapper = function StepperWrapper(_ref) {
   }, props));
 };
 
-export { Step, StepperWrapper as Stepper, useResetSteps, useStepperStateValue };
+export { Step, StepperWrapper as Stepper, useActiveStepKey, useResetSteps };
 //# sourceMappingURL=index.es.js.map
