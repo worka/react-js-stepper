@@ -228,20 +228,20 @@ function clearStorage() {
 
 function withStep(Component, activeStepKey, nextStepKey) {
   return function (props) {
-    var history = reactRouterDom.useHistory();
+    var navigate = reactRouterDom.useNavigate();
     var location = reactRouterDom.useLocation();
     var allData = getData();
     var stepData = allData[activeStepKey] || null;
 
     var goToStepByKey = function goToStepByKey(key) {
       initializeStorage();
-      history.push(_objectSpread2(_objectSpread2({}, location), {}, {
+      navigate(location.pathname, {
         state: _objectSpread2(_objectSpread2({}, location.state), {}, _defineProperty({}, HISTORY_STATE_KEY, key))
-      }));
+      });
     };
 
     var goToPrevStep = function goToPrevStep() {
-      history.goBack();
+      navigate(-1);
     };
 
     var goToNextStep = function goToNextStep() {
@@ -376,20 +376,20 @@ function Step(_ref) {
 }
 
 function useResetSteps() {
-  var history = reactRouterDom.useHistory();
+  var navigate = reactRouterDom.useNavigate();
   var location = reactRouterDom.useLocation();
   return function () {
     clearStorage();
-    history.push(_objectSpread2(_objectSpread2({}, location), {}, {
+    navigate(location.pathname, {
       state: _objectSpread2(_objectSpread2({}, location.state), {}, _defineProperty({}, HISTORY_STATE_KEY, null))
-    }));
+    });
   };
 }
 
 function useCheckRouter() {
-  var history = reactRouterDom.useHistory();
+  var navigate = reactRouterDom.useNavigate();
 
-  if (!history) {
+  if (!navigate) {
     // help to correctly determine the presence <BrowserRouter/> in the tree components :)
     throw new Error('<Stepper/> component must child the <BrowserRouter/> component');
   }

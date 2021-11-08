@@ -1,11 +1,11 @@
 import React from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { addData, getData, initializeStorage } from '../utils/storage';
 import { HISTORY_STATE_KEY } from '../constants';
 
 export default function withStep(Component, activeStepKey, nextStepKey) {
     return (props) => {
-        const history = useHistory();
+        const navigate = useNavigate();
         const location = useLocation();
 
         const allData = getData();
@@ -14,8 +14,7 @@ export default function withStep(Component, activeStepKey, nextStepKey) {
         const goToStepByKey = key => {
             initializeStorage();
 
-            history.push({
-                ...location,
+            navigate(location.pathname, {
                 state: {
                     ...location.state,
                     [HISTORY_STATE_KEY]: key
@@ -24,7 +23,7 @@ export default function withStep(Component, activeStepKey, nextStepKey) {
         };
 
         const goToPrevStep = () => {
-            history.goBack();
+            navigate(-1);
         };
 
         const goToNextStep = () => {

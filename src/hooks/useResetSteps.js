@@ -1,16 +1,15 @@
-import { useHistory, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { clearStorage } from '../utils/storage';
 import { HISTORY_STATE_KEY } from '../constants';
 
 export default function useResetSteps() {
-    const history = useHistory();
+    const navigate = useNavigate();
     const location = useLocation();
 
     return () => {
         clearStorage();
 
-        history.push({
-            ...location,
+        navigate(location.pathname, {
             state: {
                 ...location.state,
                 [HISTORY_STATE_KEY]: null

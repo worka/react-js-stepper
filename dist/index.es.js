@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 function ownKeys(object, enumerableOnly) {
   var keys = Object.keys(object);
@@ -220,20 +220,20 @@ function clearStorage() {
 
 function withStep(Component, activeStepKey, nextStepKey) {
   return function (props) {
-    var history = useHistory();
+    var navigate = useNavigate();
     var location = useLocation();
     var allData = getData();
     var stepData = allData[activeStepKey] || null;
 
     var goToStepByKey = function goToStepByKey(key) {
       initializeStorage();
-      history.push(_objectSpread2(_objectSpread2({}, location), {}, {
+      navigate(location.pathname, {
         state: _objectSpread2(_objectSpread2({}, location.state), {}, _defineProperty({}, HISTORY_STATE_KEY, key))
-      }));
+      });
     };
 
     var goToPrevStep = function goToPrevStep() {
-      history.goBack();
+      navigate(-1);
     };
 
     var goToNextStep = function goToNextStep() {
@@ -368,20 +368,20 @@ function Step(_ref) {
 }
 
 function useResetSteps() {
-  var history = useHistory();
+  var navigate = useNavigate();
   var location = useLocation();
   return function () {
     clearStorage();
-    history.push(_objectSpread2(_objectSpread2({}, location), {}, {
+    navigate(location.pathname, {
       state: _objectSpread2(_objectSpread2({}, location.state), {}, _defineProperty({}, HISTORY_STATE_KEY, null))
-    }));
+    });
   };
 }
 
 function useCheckRouter() {
-  var history = useHistory();
+  var navigate = useNavigate();
 
-  if (!history) {
+  if (!navigate) {
     // help to correctly determine the presence <BrowserRouter/> in the tree components :)
     throw new Error('<Stepper/> component must child the <BrowserRouter/> component');
   }
