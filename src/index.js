@@ -3,6 +3,7 @@ import Stepper from './components/Stepper';
 import Step from './components/Step';
 import useActiveStepKey from './hooks/useActiveStepKey';
 import useResetSteps from './hooks/useResetSteps';
+import useResetStepsAfter from './hooks/useResetStepsAfter';
 import useCheckRouter from './hooks/useCheckRouter';
 
 const StepperWrapper = ({ children, ...props }) => {
@@ -31,4 +32,4 @@ const StepperWrapper = ({ children, ...props }) => {
 };
 
 export { StepperWrapper as Stepper, Step };
-export { useActiveStepKey, useResetSteps };
+export { useActiveStepKey, useResetSteps, useResetStepsAfter };

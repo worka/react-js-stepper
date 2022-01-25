@@ -14,14 +14,9 @@ function ownKeys(object, enumerableOnly) {
 
   if (Object.getOwnPropertySymbols) {
     var symbols = Object.getOwnPropertySymbols(object);
-
-    if (enumerableOnly) {
-      symbols = symbols.filter(function (sym) {
-        return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-      });
-    }
-
-    keys.push.apply(keys, symbols);
+    enumerableOnly && (symbols = symbols.filter(function (sym) {
+      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+    })), keys.push.apply(keys, symbols);
   }
 
   return keys;
@@ -29,19 +24,12 @@ function ownKeys(object, enumerableOnly) {
 
 function _objectSpread2(target) {
   for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i] != null ? arguments[i] : {};
-
-    if (i % 2) {
-      ownKeys(Object(source), true).forEach(function (key) {
-        _defineProperty(target, key, source[key]);
-      });
-    } else if (Object.getOwnPropertyDescriptors) {
-      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
-    } else {
-      ownKeys(Object(source)).forEach(function (key) {
-        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
-      });
-    }
+    var source = null != arguments[i] ? arguments[i] : {};
+    i % 2 ? ownKeys(Object(source), !0).forEach(function (key) {
+      _defineProperty(target, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) {
+      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+    });
   }
 
   return target;
@@ -386,6 +374,26 @@ function useResetSteps() {
   };
 }
 
+function useResetStepsAfter() {
+  var navigate = reactRouterDom.useNavigate();
+  var location = reactRouterDom.useLocation();
+  return function (key) {
+    for (var _len = arguments.length, keys = new Array(_len > 1 ? _len - 1 : 0), _key2 = 1; _key2 < _len; _key2++) {
+      keys[_key2 - 1] = arguments[_key2];
+    }
+
+    if (Array.isArray(keys)) {
+      keys.forEach(function (_key) {
+        return addData(_defineProperty({}, _key, null));
+      });
+    }
+
+    navigate(location.pathname, {
+      state: _objectSpread2(_objectSpread2({}, location.state), {}, _defineProperty({}, HISTORY_STATE_KEY, key))
+    });
+  };
+}
+
 function useCheckRouter() {
   var navigate = reactRouterDom.useNavigate();
 
@@ -436,4 +444,5 @@ exports.Step = Step;
 exports.Stepper = StepperWrapper;
 exports.useActiveStepKey = useActiveStepKey;
 exports.useResetSteps = useResetSteps;
+exports.useResetStepsAfter = useResetStepsAfter;
 //# sourceMappingURL=index.js.map
