@@ -363,6 +363,15 @@ function Step(_ref) {
   return null;
 }
 
+function useCheckRouter() {
+  var navigate = reactRouterDom.useNavigate();
+
+  if (!navigate) {
+    // help to correctly determine the presence <BrowserRouter/> in the tree components :)
+    throw new Error('<Stepper/> component must child the <BrowserRouter/> component');
+  }
+}
+
 function useResetSteps() {
   var navigate = reactRouterDom.useNavigate();
   var location = reactRouterDom.useLocation();
@@ -377,30 +386,24 @@ function useResetSteps() {
 function useResetStepsAfter() {
   var navigate = reactRouterDom.useNavigate();
   var location = reactRouterDom.useLocation();
-  return function (key) {
-    for (var _len = arguments.length, keys = new Array(_len > 1 ? _len - 1 : 0), _key2 = 1; _key2 < _len; _key2++) {
-      keys[_key2 - 1] = arguments[_key2];
+  return function () {
+    for (var _len = arguments.length, keys = new Array(_len), _key = 0; _key < _len; _key++) {
+      keys[_key] = arguments[_key];
     }
 
-    if (Array.isArray(keys)) {
-      keys.forEach(function (_key) {
-        return addData(_defineProperty({}, _key, null));
+    if (keys.length) {
+      keys.forEach(function (key) {
+        return addData(_defineProperty({}, key, null));
+      });
+      navigate(location.pathname, {
+        state: _objectSpread2(_objectSpread2({}, location.state), {}, _defineProperty({}, HISTORY_STATE_KEY, keys[0]))
       });
     }
-
-    navigate(location.pathname, {
-      state: _objectSpread2(_objectSpread2({}, location.state), {}, _defineProperty({}, HISTORY_STATE_KEY, key))
-    });
   };
 }
 
-function useCheckRouter() {
-  var navigate = reactRouterDom.useNavigate();
-
-  if (!navigate) {
-    // help to correctly determine the presence <BrowserRouter/> in the tree components :)
-    throw new Error('<Stepper/> component must child the <BrowserRouter/> component');
-  }
+function useStorageData() {
+  return getData();
 }
 
 var _excluded = ["children"],
@@ -445,4 +448,5 @@ exports.Stepper = StepperWrapper;
 exports.useActiveStepKey = useActiveStepKey;
 exports.useResetSteps = useResetSteps;
 exports.useResetStepsAfter = useResetStepsAfter;
+exports.useStorageData = useStorageData;
 //# sourceMappingURL=index.js.map

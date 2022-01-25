@@ -6,16 +6,16 @@ export default function useResetStepsAfter() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    return (key, ...keys) => {
-        if (Array.isArray(keys)) {
-            keys.forEach(_key => addData({ [_key]: null }));
-        }
+    return (...keys) => {
+        if (keys.length) {
+            keys.forEach(key => addData({ [key]: null }));
 
-        navigate(location.pathname, {
-            state: {
-                ...location.state,
-                [HISTORY_STATE_KEY]: key
-            }
-        });
+            navigate(location.pathname, {
+                state: {
+                    ...location.state,
+                    [HISTORY_STATE_KEY]: keys[0]
+                }
+            });
+        }
     };
 }

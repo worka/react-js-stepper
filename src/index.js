@@ -2,9 +2,10 @@ import React from 'react';
 import Stepper from './components/Stepper';
 import Step from './components/Step';
 import useActiveStepKey from './hooks/useActiveStepKey';
+import useCheckRouter from './hooks/useCheckRouter';
 import useResetSteps from './hooks/useResetSteps';
 import useResetStepsAfter from './hooks/useResetStepsAfter';
-import useCheckRouter from './hooks/useCheckRouter';
+import useStorageData from './hooks/useStorageData';
 
 const StepperWrapper = ({ children, ...props }) => {
     useCheckRouter();
@@ -32,4 +33,4 @@ const StepperWrapper = ({ children, ...props }) => {
 };
 
 export { StepperWrapper as Stepper, Step };
-export { useActiveStepKey, useResetSteps, useResetStepsAfter };
+export { useActiveStepKey, useResetSteps, useResetStepsAfter, useStorageData };
